@@ -9,5 +9,3 @@ venv/
 # OS files
 .DS_Store
 
-# Logs
-*.log
