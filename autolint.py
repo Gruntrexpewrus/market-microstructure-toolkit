@@ -27,5 +27,5 @@ if __name__ == "__main__":
 
     auto_lint(sys.argv[1])
 
-#python auto_lint.py src/
-#python auto_lint.py src/exchange.py
+#python autolint.py src/
+#python autolint.py src/exchange.py
