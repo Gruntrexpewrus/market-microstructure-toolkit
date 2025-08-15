@@ -44,7 +44,7 @@ logging.basicConfig(
     filename=os.path.join(
         "logs", "exchange.log"
     ),  # saves log file in the current working directory
-    filemode = 'w',
+    filemode="w",
     level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -75,21 +75,30 @@ def make_exchange(name: str, default_type: str = None, **kwargs):
         raise ValueError(f"Exchange '{name}' not found in CCXT.")
 
 
-def assert_symbol_multi_type(exchange_or_name, symbol, **kwargs):
+def assert_symbol_multi_type(
+    exchange_or_name, symbol, default_type: str = None, **kwargs
+):
     """
     Try spot first, then swap if symbol not found.
     Accepts either an exchange object or exchange name string.
     """
-    for market_type in ["spot", "swap", "future"]:
-        if isinstance(exchange_or_name, str):
-            ex = make_exchange(exchange_or_name, default_type=market_type, **kwargs)
-        else:
-            ex = exchange_or_name
-            ex.options = {**getattr(ex, "options", {}), "defaultType": market_type}
-
+    if default_type:
+        ex = make_exchange(exchange_or_name, default_type=default_type, **kwargs)
         ex.load_markets()
-        if symbol in ex.symbols:
-            return ex, market_type
+        if symbol not in ex.symbols:
+            raise ValueError(f"{symbol} not listed on {ex.id} ({default_type})")
+        return ex, default_type
+    else:
+        for market_type in ["spot", "swap", "future"]:
+            if isinstance(exchange_or_name, str):
+                ex = make_exchange(exchange_or_name, default_type=market_type, **kwargs)
+            else:
+                ex = exchange_or_name
+                ex.options = {**getattr(ex, "options", {}), "defaultType": market_type}
+
+            ex.load_markets()
+            if symbol in ex.symbols:
+                return ex, market_type
     raise ValueError(
         f"{symbol} not listed on {getattr(ex, 'id', exchange_or_name)} in spot or swap or future"
     )

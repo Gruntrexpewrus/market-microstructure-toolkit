@@ -18,6 +18,7 @@ from typing import List, Tuple, Dict, Any, Optional
 from pathlib import Path
 import logging
 
+
 def setup_logging(name: str, logfile: str):
     Path(os.path.dirname(logfile)).mkdir(parents=True, exist_ok=True)
     logger = logging.getLogger(name)
@@ -38,9 +39,13 @@ def setup_logging(name: str, logfile: str):
     logger.addHandler(ch)
     return logger
 
+
 log = setup_logging("snapshot", "logs/snapshot.log")
 
-def _norm(levels_list: Optional[List[List[float]]], n: int) -> List[Tuple[float, float]]:
+
+def _norm(
+    levels_list: Optional[List[List[float]]], n: int
+) -> List[Tuple[float, float]]:
     """Normalize raw [price, size] into [(float(px), float(sz))], truncated to n."""
     out: List[Tuple[float, float]] = []
     if not levels_list:
@@ -53,15 +58,17 @@ def _norm(levels_list: Optional[List[List[float]]], n: int) -> List[Tuple[float,
             log.warning("Skipping malformed level %s (err=%s)", lvl, e)
     return out
 
+
 def _iso_utc(ts_ms: int) -> str:
     return datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc).isoformat()
+
 
 def fetch_order_book_snapshot(
     ex,
     symbol: str,
     depth: int = 10,
-    book_level: str = "L2",        # "L1" | "L2" | "L3"
-    params: Optional[dict] = None  # exchange-specific params if needed
+    book_level: str = "L2",  # "L1" | "L2" | "L3"
+    params: Optional[dict] = None,  # exchange-specific params if needed
 ) -> Dict[str, Any]:
     """
     Return a normalized snapshot dict.
@@ -120,7 +127,11 @@ def fetch_order_book_snapshot(
     if best_bid is not None and best_ask is not None and best_bid >= best_ask:
         log.warning(
             "Crossed/locked book: best_bid=%.8f best_ask=%.8f (%s %s, %s)",
-            best_bid, best_ask, ex.id, symbol_ex, book_level
+            best_bid,
+            best_ask,
+            ex.id,
+            symbol_ex,
+            book_level,
         )
 
     return {
@@ -136,15 +147,18 @@ def fetch_order_book_snapshot(
         "book_level": book_level,
     }
 
+
 # Optional: local smoke test. Prefer a separate script in scripts/ for cleanliness.
 if __name__ == "__main__":
     from exchange import assert_symbol_multi_type
 
-    ex, mtype = assert_symbol_multi_type("bybit", "BTC/USDT", timeout=10000)
+    ex, mtype = assert_symbol_multi_type(
+        "bybit", "BTC/USDT:USDT", timeout=10000, default_type="swap"
+    )
     log.info("Using %s (%s)", ex.id, mtype)
 
-    s1 = fetch_order_book_snapshot(ex, "BTC/USDT", depth=1, book_level="L1")
+    s1 = fetch_order_book_snapshot(ex, "BTC/USDT:USDT", depth=1, book_level="L1")
     log.info("L1 best_bid=%s best_ask=%s", s1["best_bid"], s1["best_ask"])
 
-    s2 = fetch_order_book_snapshot(ex, "BTC/USDT", depth=10, book_level="L2")
+    s2 = fetch_order_book_snapshot(ex, "BTC/USDT:USDT", depth=10, book_level="L2")
     log.info("L2 bids[:2]=%s asks[:2]=%s", s2["bids"][:2], s2["asks"][:2])
