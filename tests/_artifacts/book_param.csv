@@ -1,0 +1,2 @@
+ts_ms,iso,exchange_id,symbol,book_level,raw_nonce,best_bid,best_ask,bid1_price,bid1_size,bid2_price,bid2_size,bid3_price,bid3_size,ask1_price,ask1_size,ask2_price,ask2_size,ask3_price,ask3_size
+1700000000000,2023-11-14T00:00:00+00:00,fake,BTC/USDT,L2,42,100.0000000000,100.1000000000,100.0000000000,1.0000000000,99.9000000000,1.0100000000,,,100.1000000000,0.5000000000,,,,
