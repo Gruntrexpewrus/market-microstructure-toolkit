@@ -22,8 +22,8 @@ pip install -r requirements.txt
 ```
 Usage / Milestones
 	•	✅ T2: Exchange bootstrap & symbol checks
-	•	⬜ T3: Normalized top-N order book snapshot (in progress)
-	•	⬜ T4: 60s recorder (1 Hz) → CSV
+	•	✅ T3: Normalized top-N order book snapshot (in progress)
+	•	✅ T4: 60s recorder (1 Hz) → CSV
 	•	⬜ T5–T9: Metrics (spread, DI, OFI, RV, microprice) + plots
 	•	⬜ T10: One-command pipeline (record → metrics → plots)
 
