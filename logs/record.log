@@ -1,1 +1,4 @@
-2025-08-15 15:13:30,098 INFO record: Hello, logging!
+2025-08-16 18:38:45,969 INFO record: Recording 10s at 1.0 Hz (depth=100, level=L2, format=csv) → data/BTCUSDT_swap_demo_10s.csv
+2025-08-16 18:38:55,074 INFO record: Done. Rows captured: 10 → data/BTCUSDT_swap_demo_10s.csv
+2025-08-16 18:38:55,075 INFO record: Recording 10s at 1.0 Hz (depth=100, level=L2, format=parquet) → data/BTCUSDT_swap_demo_10s.parquet
+2025-08-16 18:39:06,887 INFO record: Done. Rows captured: 10 → data/BTCUSDT_swap_demo_10s.parquet
