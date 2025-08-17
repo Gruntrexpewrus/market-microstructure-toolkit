@@ -1,6 +1,6 @@
-2025-08-16 18:39:37,117 INFO record: Recording 1s at 2.0 Hz (depth=5, level=L2, format=csv) → tests/_artifacts/book.csv
-2025-08-16 18:39:37,624 INFO record: Done. Rows captured: 2 → tests/_artifacts/book.csv
-2025-08-16 18:39:37,628 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=parquet) → tests/_artifacts/book_param.parquet
-2025-08-16 18:39:39,649 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.parquet
-2025-08-16 18:39:39,650 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=csv) → tests/_artifacts/book_param.csv
-2025-08-16 18:39:39,650 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.csv
+2025-08-17 19:41:49,096 INFO record: Recording 1s at 2.0 Hz (depth=5, level=L2, format=csv) → tests/_artifacts/book.csv
+2025-08-17 19:41:49,601 INFO record: Done. Rows captured: 2 → tests/_artifacts/book.csv
+2025-08-17 19:41:49,604 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=parquet) → tests/_artifacts/book_param.parquet
+2025-08-17 19:42:16,163 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.parquet
+2025-08-17 19:42:16,164 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=csv) → tests/_artifacts/book_param.csv
+2025-08-17 19:42:16,164 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.csv
