@@ -18,20 +18,10 @@ from pathlib import Path
 import logging
 
 # --- robust import for snapshot (works in both module and script modes) ---
-try:
-    # Package import (preferred): python -m src.record
-    from .snapshot import fetch_order_book_snapshot
-except Exception:
-    # Script import fallback: python src/record.py
-    import sys as _sys
-
-    _sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root
-    from src.snapshot import fetch_order_book_snapshot  # type: ignore
-
-# Named logger; configure handlers only in __main__ or via tests
-log = logging.getLogger("record")
+from .snapshot import fetch_order_book_snapshot
 
 # ------------- helpers: paths & schema -------------
+log = logging.getLogger(__name__)  # no handlers here
 
 
 def _ensure_parent(path: str) -> None:
@@ -219,56 +209,119 @@ def record_snapshots(
 
 if __name__ == "__main__":
     """
-    Demo:
-        - CSV:     python -m src.record
-        - Parquet: python -m src.record parquet
-        - Script:  python src/record.py
+    CLI usage examples:
+
+      # 10s @ 1 Hz, Bybit USDT swap, depth=50, L2, CSV
+      python -m src.record \
+        --exchange bybit \
+        --market-type swap \
+        --symbol BTC/USDT:USDT \
+        --seconds 10 \
+        --hz 1 \
+        --depth 50 \
+        --book-level L2 \
+        --format csv \
+        --out data/BTCUSDT_swap_10s.csv
+
+      # Same but Parquet:
+      python -m src.record \
+        --exchange bybit --market-type swap \
+        --symbol BTC/USDT:USDT --seconds 10 --hz 1 \
+        --depth 50 --book-level L2 --format parquet \
+        --out data/BTCUSDT_swap_10s.parquet
     """
-    import sys
+    import argparse
+    import json
 
-    # Configure logger only when running the demo:
-    try:
-        from .setup_log import setup_logging  # package mode
-        from .exchange import make_exchange
-    except Exception:
-        # script mode fallback
-        from src.setup_log import setup_logging  # type: ignore
-        from src.exchange import make_exchange  # type: ignore
+    from .setup_log import setup_logging
+    from .exchange import make_exchange
 
-    setup_logging(name="record")
-
-    seconds = 10
-    fmt = "csv"
-    if len(sys.argv) > 1:
-        fmt = sys.argv[1].lower()
-
-    Path("data").mkdir(parents=True, exist_ok=True)
-    ex = make_exchange("bybit", default_type="swap", timeout=10000)
-    symbol = "BTC/USDT:USDT"
-
-    out = (
-        f"data/BTCUSDT_swap_demo_{seconds}s.{ 'parquet' if fmt=='parquet' else 'csv' }"
+    parser = argparse.ArgumentParser(
+        description="Record order-book snapshots to CSV/Parquet."
     )
+    parser.add_argument(
+        "--exchange", required=True, help="CCXT exchange id, e.g., bybit, binance, okx"
+    )
+    parser.add_argument(
+        "--market-type",
+        choices=["spot", "swap", "future"],
+        default="spot",
+        help="CCXT defaultType for the exchange (default: spot)",
+    )
+    parser.add_argument(
+        "--symbol",
+        required=True,
+        help="Unified symbol, e.g., BTC/USDT or BTC/USDT:USDT for swaps",
+    )
+    parser.add_argument(
+        "--seconds", type=int, default=60, help="Duration to record (seconds)"
+    )
+    parser.add_argument(
+        "--hz", type=float, default=1.0, help="Snapshots per second (Hz)"
+    )
+    parser.add_argument(
+        "--depth", type=int, default=50, help="Top-N levels to save per side"
+    )
+    parser.add_argument(
+        "--book-level",
+        choices=["L1", "L2", "L3"],
+        default="L2",
+        help="Order book detail level",
+    )
+    parser.add_argument(
+        "--format", choices=["csv", "parquet"], default="csv", help="Output format"
+    )
+    parser.add_argument(
+        "--out",
+        default="",
+        help="Output path (.csv or .parquet). If empty, an auto name is used.",
+    )
+    parser.add_argument(
+        "--timeout", type=int, default=10000, help="Exchange HTTP timeout (ms)"
+    )
+    parser.add_argument(
+        "--params",
+        default="",
+        help="Optional JSON for exchange-specific params (rarely needed)",
+    )
+
+    args = parser.parse_args()
+
+    # Configure the named logger used in this module
+    log = setup_logging(name="record")
+
+    # Build exchange
+    ex = make_exchange(
+        args.exchange, default_type=args.market_type, timeout=args.timeout
+    )
+
+    # Resolve output path
+    if args.out:
+        out_path = args.out
+    else:
+        Path("data").mkdir(parents=True, exist_ok=True)
+        # eg: data/bybit_BTCUSDTUSDT_swap_L2_60s.parquet
+        sym_sanitized = args.symbol.replace("/", "").replace(":", "")
+        out_path = f"data/{args.exchange}_{sym_sanitized}_{args.market_type}_{args.book_level}_{args.seconds}s.{args.format}"
+    # Optional venue params (JSON string)
+    try:
+        extra_params = json.loads(args.params) if args.params else {}
+    except Exception as e:
+        log.warning(
+            "Could not parse --params JSON (%s). Proceeding without extra params.", e
+        )
+        extra_params = {}
+
+    # Run
     record_snapshots(
         ex=ex,
-        symbol=symbol,
-        depth=100,
-        seconds=seconds,
-        hz=1.0,
-        out_path=out,
-        book_level="L2",
-        out_format=fmt,
+        symbol=args.symbol,
+        depth=args.depth,
+        seconds=args.seconds,
+        hz=args.hz,
+        out_path=out_path,
+        book_level=args.book_level,
+        out_format=args.format,
     )
 
-    # optional second run in parquet for the demo
-    if fmt != "parquet":
-        record_snapshots(
-            ex=ex,
-            symbol=symbol,
-            depth=100,
-            seconds=seconds,
-            hz=1.0,
-            out_path=f"data/BTCUSDT_swap_demo_{seconds}s.parquet",
-            book_level="L2",
-            out_format="parquet",
-        )
+    log.info("Saved: %s", out_path)

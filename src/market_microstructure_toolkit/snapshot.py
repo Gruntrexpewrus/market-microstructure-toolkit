@@ -12,35 +12,13 @@
 from __future__ import annotations
 
 import time
-import os
 from datetime import datetime, timezone
 from typing import List, Tuple, Dict, Any, Optional
-from pathlib import Path
 import logging
 
+from .setup_log import setup_logging
 
-def setup_logging(name: str, logfile: str):
-    Path(os.path.dirname(logfile)).mkdir(parents=True, exist_ok=True)
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
-    logger.propagate = False  # avoid double logs if root has handlers
-
-    # clear old handlers if re-run
-    for h in list(logger.handlers):
-        logger.removeHandler(h)
-
-    fmt = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
-    fh = logging.FileHandler(logfile, mode="w", encoding="utf-8")
-    fh.setFormatter(fmt)
-    ch = logging.StreamHandler()
-    ch.setFormatter(fmt)
-
-    logger.addHandler(fh)
-    logger.addHandler(ch)
-    return logger
-
-
-log = setup_logging("snapshot", "logs/snapshot.log")
+log = logging.getLogger(__name__)  # no handlers here
 
 
 def _norm(
@@ -150,8 +128,10 @@ def fetch_order_book_snapshot(
 
 # Optional: local smoke test. Prefer a separate script in scripts/ for cleanliness.
 if __name__ == "__main__":
-    from exchange import assert_symbol_multi_type
+    from .exchange import assert_symbol_multi_type
 
+    # Configure the named logger used in this module
+    log = setup_logging(name="snapshot")
     ex, mtype = assert_symbol_multi_type(
         "bybit", "BTC/USDT:USDT", timeout=10000, default_type="swap"
     )

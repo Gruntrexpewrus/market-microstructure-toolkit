@@ -1,5 +1,5 @@
 import pytest
-import src.snapshot as snapshot
+import market_microstructure_toolkit.snapshot as snapshot
 
 
 class DummyExchange:

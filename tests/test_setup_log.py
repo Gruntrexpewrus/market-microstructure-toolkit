@@ -1,7 +1,7 @@
 import pytest
 
 
-from src.setup_log import setup_logging
+from market_microstructure_toolkit.setup_log import setup_logging
 
 
 def test_setup_logging_creates_logfile(tmp_path):

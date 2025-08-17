@@ -3,8 +3,10 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "market-microstructure-toolkit"
+name = "market_microstructure_toolkit"
 version = "0.0.1"
+description = "Research toolkit for order book microstructure"
+authors = [{name="Leonardo Placidi"}]
 requires-python = ">=3.9"
 
 [tool.setuptools]

@@ -1,4 +1,6 @@
-Metadata-Version: 2.2
-Name: market-microstructure-toolkit
+Metadata-Version: 2.4
+Name: market_microstructure_toolkit
 Version: 0.0.1
+Summary: Research toolkit for order book microstructure
+Author: Leonardo Placidi
 Requires-Python: >=3.9

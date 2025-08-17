@@ -21,17 +21,12 @@ from pathlib import Path
 import pytest
 
 # Import the module under test; support both package and flat layouts.
-try:
-    import src.record as record
-except Exception:
-    import record  # flat layout fallback
+import market_microstructure_toolkit.record as record
+
 
 # robust import for setup_log from root or src/
-try:
-    from src.setup_log import setup_logging
-except Exception:
-    # if you moved it into src/
-    from setup_log import setup_logging
+from market_microstructure_toolkit.setup_log import setup_logging
+
 
 
 # ensure logs go to tests/_artifacts/logs and rebind the SAME logger the code uses

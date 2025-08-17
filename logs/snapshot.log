@@ -1,1 +1,3 @@
-2025-08-16 18:39:39,730 WARNING snapshot: Skipping malformed level ['bad', 'data'] (err=could not convert string to float: 'bad')
+2025-08-17 19:26:53,142 INFO snapshot: Using bybit (swap)
+2025-08-17 19:26:53,222 INFO snapshot: L1 best_bid=118187.3 best_ask=118187.4
+2025-08-17 19:26:53,328 INFO snapshot: L2 bids[:2]=[(118187.3, 2.406), (118186.3, 0.078)] asks[:2]=[(118187.4, 4.194), (118188.6, 2.301)]

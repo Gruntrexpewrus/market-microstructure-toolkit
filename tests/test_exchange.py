@@ -1,5 +1,5 @@
 import pytest
-import src.exchange as ex_mod
+import market_microstructure_toolkit.exchange as ex_mod
 
 
 class DummyExchange:
