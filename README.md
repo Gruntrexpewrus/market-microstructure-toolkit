@@ -75,6 +75,48 @@ python -m market_microstructure_toolkit.record \
   --book-level L2 --format parquet --out data/ETHUSDT_swap_30s.parquet \
 && python -m market_microstructure_toolkit.metrics_cli data/ETHUSDT_swap_30s.parquet 100
 ```
+---
+
+4) Plotting Metrics
+
+The toolkit now includes a **plotting CLI** that visualizes spreads, microprice, OFI, and realized variance directly from recorded CSV/Parquet files.
+
+### Example
+
+```bash
+# Record 60s of ETH/USDT order book at depth 100
+python -m market_microstructure_toolkit.record \
+  --exchange bybit --market-type swap \
+  --symbol ETH/USDT:USDT --seconds 60 --hz 1 --depth 100 \
+  --book-level L2 --format parquet --out data/ETH_bybit_L2_60s.parquet
+
+# Plot metrics (saves PNGs in the same folder)
+python -m market_microstructure_toolkit.plot_cli data/ETH_bybit_L2_60s.parquet --depth 100 --save
+# → saves PNGs into: plots/ETH_bybit_L2_60s/
+```
+### Mid vs Microprice
+Captures the mid-quote vs microprice (liquidity-weighted mid).  
+![Mid vs Microprice](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/WIP/plots/ETH_bybit_L2_60s/mid_micro.png)
+
+### Relative Spread (bps)
+Spread relative to midprice (basis points).  
+![Spread (bps)](plots/ETH_bybit_L2_60s/spread_bps.png)
+
+### Order Flow Imbalance (L1)
+Flow imbalance from the best bid/ask sizes (instantaneous and cumulative).  
+![OFI (L1)](plots/ETH_bybit_L2_60s/ofi.png)  
+![OFI (L1) — Cumulative](plots/ETH_bybit_L2_60s/ofi_cum.png)
+
+### Depth-K OFI (K=10)
+Order flow imbalance measured across top-10 levels (size-based and notional).  
+![OFI K=10 (Size)](plots/ETH_bybit_L2_60s/ofi_k10_size.png)  
+![OFI K=10 (Size, Cumulative)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/WIP/plots/ETH_bybit_L2_60s/ofi_k10_size_cum.png)  
+![OFI K=10 (Notional)](plots/ETH_bybit_L2_60s/ofi_k10_notional.png)  
+![OFI K=10 (Notional, Cumulative)](plots/ETH_bybit_L2_60s/ofi_k10_notional_cum.png)
+
+### Realized Variance
+Rolling realized variance of midprice (RV-20).  
+![Realized Variance](plots/ETH_bybit_L2_60s/rv.png)
 
 ## Roadmap
 
@@ -85,11 +127,11 @@ python -m market_microstructure_toolkit.record \
 ✅ Metrics: spread, mid, imbalance (L1, depth-K)  
 
 **Phase 2 (next):**  
-⬜ Relative spread (bps)  
-⬜ Microprice & microprice imbalance  
-⬜ Rolling realized variance & volatility proxies  
-⬜ Notional depth, book slope/convexity  
-⬜ Order flow imbalance (OFI)  
+✅ Relative spread (bps)  
+✅ Microprice & microprice imbalance  
+✅ Rolling realized variance & volatility proxies  
+✅ Notional depth, book slope/convexity  
+✅ Order flow imbalance (OFI)  
 
 **Phase 3 (later):**  
 ⬜ Websocket streaming collectors  

@@ -28,7 +28,6 @@ import market_microstructure_toolkit.record as record
 from market_microstructure_toolkit.setup_log import setup_logging
 
 
-
 # ensure logs go to tests/_artifacts/logs and rebind the SAME logger the code uses
 ARTIFACTS_LOGS = Path("tests/_artifacts/logs")
 ARTIFACTS_LOGS.mkdir(parents=True, exist_ok=True)
