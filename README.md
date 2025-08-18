@@ -94,30 +94,29 @@ python -m market_microstructure_toolkit.record \
 python -m market_microstructure_toolkit.plot_cli data/ETH_bybit_L2_60s.parquet --depth 100 --save
 # → saves PNGs into: plots/ETH_bybit_L2_60s/
 ```
-
 ### Mid vs Microprice
 Captures the mid-quote vs microprice (liquidity-weighted mid).  
-![Mid vs Microprice](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/mid_micro.png)
+![Mid vs Microprice](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/WIP/plots/ETH_bybit_L2_60s/mid_micro.png)
 
 ### Relative Spread (bps)
 Spread relative to midprice (basis points).  
-![Spread (bps)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/spread_bps.png)
+![Spread (bps)](plots/ETH_bybit_L2_60s/spread_bps.png)
 
 ### Order Flow Imbalance (L1)
 Flow imbalance from the best bid/ask sizes (instantaneous and cumulative).  
-![OFI (L1)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi.png)  
-![OFI (L1) Cumulative](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi_cum.png)
+![OFI (L1)](plots/ETH_bybit_L2_60s/ofi.png)  
+![OFI (L1) — Cumulative](plots/ETH_bybit_L2_60s/ofi_cum.png)
 
 ### Depth-K OFI (K=10)
 Order flow imbalance measured across top-10 levels (size-based and notional).  
-![OFI K=10 (Size)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi_k10_size.png)  
-![OFI K=10 (Size, Cumulative)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi_k10_size_cum.png)  
-![OFI K=10 (Notional)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi_k10_notional.png)  
-![OFI K=10 (Notional, Cumulative)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/ofi_k10_notional_cum.png)
+![OFI K=10 (Size)](plots/ETH_bybit_L2_60s/ofi_k10_size.png)  
+![OFI K=10 (Size, Cumulative)](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/WIP/plots/ETH_bybit_L2_60s/ofi_k10_size_cum.png)  
+![OFI K=10 (Notional)](plots/ETH_bybit_L2_60s/ofi_k10_notional.png)  
+![OFI K=10 (Notional, Cumulative)](plots/ETH_bybit_L2_60s/ofi_k10_notional_cum.png)
 
 ### Realized Variance
 Rolling realized variance of midprice (RV-20).  
-![Realized Variance](https://raw.githubusercontent.com/Gruntrexpewrus/market-microstructure-toolkit/main/plots/ETH_bybit_L2_60s/rv.png)
+![Realized Variance](plots/ETH_bybit_L2_60s/rv.png)
 
 ## Roadmap
 
