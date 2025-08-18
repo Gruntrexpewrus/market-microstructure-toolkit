@@ -1,6 +1,11 @@
-2025-08-17 19:30:16,636 INFO metrics: Input row:
-2025-08-17 19:30:16,637 INFO metrics: Metrics at depth=2:
-2025-08-17 19:30:16,637 INFO metrics:   spread: 0.09999999999999432
-2025-08-17 19:30:16,637 INFO metrics:   mid: 100.05
-2025-08-17 19:30:16,637 INFO metrics:   imbalance_l1: 0.5555555555555556
-2025-08-17 19:30:16,637 INFO metrics:   imbalance_k: 0.5172413793103449
+2025-08-18 18:19:22,831 INFO metrics: Input row:
+2025-08-18 18:19:22,832 INFO metrics: Metrics at depth=2:
+2025-08-18 18:19:22,833 INFO metrics:   spread: 0.09999999999999432
+2025-08-18 18:19:22,833 INFO metrics:   mid: 100.05
+2025-08-18 18:19:22,833 INFO metrics:   relative_spread_bps: 9.995002498750058
+2025-08-18 18:19:22,833 INFO metrics:   microprice: 100.05555555555554
+2025-08-18 18:19:22,833 INFO metrics:   microprice_imbalance_bps: 0.5552779165962785
+2025-08-18 18:19:22,833 INFO metrics:   imbalance_l1: 0.5555555555555556
+2025-08-18 18:19:22,833 INFO metrics:   imbalance_k: 0.5172413793103449
+2025-08-18 18:19:22,833 INFO metrics:   notional_bid_k: 149.95
+2025-08-18 18:19:22,833 INFO metrics:   notional_ask_k: 140.2
