@@ -1,0 +1,5 @@
+[console_scripts]
+mmt-metrics = market_microstructure_toolkit.metrics_cli:main
+mmt-plot = market_microstructure_toolkit.plot_cli:main
+mmt-record = market_microstructure_toolkit.record:main
+mmt-ws-record = market_microstructure_toolkit.ws_record:main

@@ -222,3 +222,5 @@ widgetsnbextension==4.0.10
 yarl==1.9.4
 yfinance==0.2.38
 zipp==3.17.0
+pytest
+pytest-asyncio
