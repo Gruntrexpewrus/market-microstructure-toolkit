@@ -28,15 +28,16 @@ r"""
 """
 
 from __future__ import annotations
-from typing import Dict, Any, Iterable, Tuple, Optional, List
+
 import math
-import pandas as pd
+from collections.abc import Iterable
+from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
+import pandas as pd
 
 
-def _parse_level(
-    row: Dict[str, Any], side: str, i: int
-) -> Tuple[Optional[float], Optional[float]]:
+def _parse_level(row: Dict[str, Any], side: str, i: int) -> Tuple[Optional[float], Optional[float]]:
     """Extract (price, size) for side='bid'|'ask' at level i (1-based). Returns (None, None) if blank."""
     px_key, sz_key = f"{side}{i}_price", f"{side}{i}_size"
     px = row.get(px_key, "")
@@ -64,9 +65,7 @@ def spread_and_mid(
     return spread, mid
 
 
-def imbalance_l1(
-    best_bid_size: Optional[float], best_ask_size: Optional[float]
-) -> Optional[float]:
+def imbalance_l1(best_bid_size: Optional[float], best_ask_size: Optional[float]) -> Optional[float]:
     """Depth imbalance at level-1 only: bidSize / (bidSize + askSize). Returns None if both missing or zero."""
     b = best_bid_size or 0.0
     a = best_ask_size or 0.0
@@ -135,12 +134,7 @@ def microprice(
     Intuition: price leans toward the side with *less* queue (more pressure).
     Returns None if any of the required inputs are missing or denom <= 0.
     """
-    if (
-        (best_bid is None)
-        or (best_ask is None)
-        or (bid_size is None)
-        or (ask_size is None)
-    ):
+    if (best_bid is None) or (best_ask is None) or (bid_size is None) or (ask_size is None):
         return None
     denom = bid_size + ask_size
     if denom <= 0:
@@ -199,9 +193,7 @@ def realized_var(price, window: int = 20, use_log: bool = True) -> pd.Series:
     return r.pow(2).rolling(window=window, min_periods=window).sum()
 
 
-def rolling_realized_variance(
-    prices: Iterable[float], window: int
-) -> List[Optional[float]]:
+def rolling_realized_variance(prices: Iterable[float], window: int) -> List[Optional[float]]:
     """
     Realized variance over a rolling window using simple log-returns.
     For a series p_t, define r_t = ln(p_t / p_{t-1}).
@@ -240,9 +232,7 @@ def rolling_realized_variance(
     return out
 
 
-def notional_depth(
-    row: Dict[str, Any], depth: int
-) -> Tuple[Optional[float], Optional[float]]:
+def notional_depth(row: Dict[str, Any], depth: int) -> Tuple[Optional[float], Optional[float]]:
     """
     Sum of (price * size) for top-K per side (notional in quote currency).
     Returns (bid_notional, ask_notional). Missing/blank levels ignored.

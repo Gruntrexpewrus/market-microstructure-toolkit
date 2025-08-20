@@ -6,10 +6,12 @@
 # This was coded with love <3
 
 from __future__ import annotations
+
 import argparse
-from pathlib import Path
-from typing import Dict, Any, Iterable, Optional
 import math
+from collections.abc import Iterable
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 
 def _load_rows(path: Path) -> Iterable[Dict[str, Any]]:
@@ -71,9 +73,7 @@ def _sum_depth_sizes(df, side: str, K: int):
     """Sum of sizes across the top-K for one side."""
     import pandas as pd
 
-    cols = [
-        f"{side}{i}_size" for i in range(1, K + 1) if f"{side}{i}_size" in df.columns
-    ]
+    cols = [f"{side}{i}_size" for i in range(1, K + 1) if f"{side}{i}_size" in df.columns]
     if not cols:
         return None
     S = pd.DataFrame({c: pd.to_numeric(df[c], errors="coerce") for c in cols})
@@ -101,13 +101,14 @@ def _compute_metrics(df, depth: int):
          microprice, OFI(L1), cumulative OFI, RV(20).
     Uses vectorized formulas to work on pandas Series.
     """
+    import numpy as np
+    import pandas as pd
+
     from .metrics import (
         compute_row_metrics,  # per-row dict (spread, mid, imbalance_l1, imbalance_k)
         realized_var,  # vector-friendly
         # relative_spread_bps, # we’ll compute vectorized inline for robustness
     )
-    import pandas as pd
-    import numpy as np
 
     # per-row metrics (spread, mid, imbalance_l1, imbalance_k) using your existing helper
     mdf = df.apply(
@@ -185,8 +186,9 @@ def _compute_metrics(df, depth: int):
 
 
 def _plot(df, out: Optional[Path] = None):
-    import matplotlib.pyplot as plt
     from pathlib import Path
+
+    import matplotlib.pyplot as plt
 
     # Decide base output folder (if saving)
     save_dir = None
@@ -261,9 +263,7 @@ def _plot(df, out: Optional[Path] = None):
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Plot metrics from a recorded CSV/Parquet."
-    )
+    parser = argparse.ArgumentParser(description="Plot metrics from a recorded CSV/Parquet.")
     parser.add_argument(
         "input", type=Path, help="Path to CSV or Parquet file recorded by the toolkit"
     )
@@ -273,9 +273,7 @@ def main():
         default=50,
         help="Depth used when recording (for imbalance_k)",
     )
-    parser.add_argument(
-        "--save", action="store_true", help="Save PNGs next to the input file"
-    )
+    parser.add_argument("--save", action="store_true", help="Save PNGs next to the input file")
     args = parser.parse_args()
 
     rows = _load_rows(args.input)

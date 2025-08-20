@@ -6,10 +6,11 @@
 # This was coded with love <3
 
 from __future__ import annotations
+
 import sys
 from pathlib import Path
 
-from .metrics import compute_row_metrics, rolling_realized_variance, ofi_l1
+from .metrics import compute_row_metrics, ofi_l1, rolling_realized_variance
 
 
 def _prefer_parquet(p: Path) -> bool:
@@ -47,15 +48,12 @@ def _write_csv(rows, header, out_path: Path):
 
 def main():
     import argparse
+
     from .setup_log import setup_logging
 
-    parser = argparse.ArgumentParser(
-        description="Add metrics to a recorded CSV/Parquet."
-    )
+    parser = argparse.ArgumentParser(description="Add metrics to a recorded CSV/Parquet.")
     parser.add_argument("input_file", help="Input CSV/Parquet from record.py")
-    parser.add_argument(
-        "depth", type=int, help="Top-K depth to use for imbalance/notional"
-    )
+    parser.add_argument("depth", type=int, help="Top-K depth to use for imbalance/notional")
     parser.add_argument(
         "--rv-window", type=int, default=20, help="Rolling RV window length (in rows)"
     )

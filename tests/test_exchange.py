@@ -1,4 +1,5 @@
 import pytest
+
 import market_microstructure_toolkit.exchange as ex_mod
 
 
@@ -22,9 +23,7 @@ def test_make_exchange_sets_options(monkeypatch):
 
 def test_assert_symbol_multi_type_found(monkeypatch):
     # Force bybit to return BTC/USDT in symbols
-    monkeypatch.setattr(
-        ex_mod.ccxt, "bybit", lambda kwargs: DummyExchange(symbols=["BTC/USDT"])
-    )
+    monkeypatch.setattr(ex_mod.ccxt, "bybit", lambda kwargs: DummyExchange(symbols=["BTC/USDT"]))
     ex, mtype = ex_mod.assert_symbol_multi_type("bybit", "BTC/USDT")
     assert isinstance(ex, DummyExchange)
     assert mtype == "spot"  # first tried type

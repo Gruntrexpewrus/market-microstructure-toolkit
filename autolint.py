@@ -2,6 +2,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+
 def auto_lint(path: str):
     """Run Black and Ruff on the given path."""
     path = Path(path).resolve()
@@ -20,6 +21,7 @@ def auto_lint(path: str):
 
     print("✅ Formatting and linting complete.")
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python auto_lint.py <path-to-file-or-folder>")
@@ -27,5 +29,5 @@ if __name__ == "__main__":
 
     auto_lint(sys.argv[1])
 
-#python autolint.py src/
-#python autolint.py src/exchange.py
+# python autolint.py src/
+# python autolint.py src/exchange.py

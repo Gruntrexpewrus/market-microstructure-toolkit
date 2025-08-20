@@ -23,10 +23,8 @@ import pytest
 # Import the module under test; support both package and flat layouts.
 import market_microstructure_toolkit.record as record
 
-
 # robust import for setup_log from root or src/
 from market_microstructure_toolkit.setup_log import setup_logging
-
 
 # ensure logs go to tests/_artifacts/logs and rebind the SAME logger the code uses
 ARTIFACTS_LOGS = Path("tests/_artifacts/logs")
@@ -199,9 +197,7 @@ def test_record_snapshots_parquet_or_fallback(monkeypatch, engine):
     ex = FakeExchange()
 
     # choose output path by engine (important!)
-    out_path = ARTIFACTS / (
-        "book_param.parquet" if engine == "parquet" else "book_param.csv"
-    )
+    out_path = ARTIFACTS / ("book_param.parquet" if engine == "parquet" else "book_param.csv")
 
     # clean previous runs for idempotence
     for p in (ARTIFACTS / "book_param.parquet", ARTIFACTS / "book_param.csv"):

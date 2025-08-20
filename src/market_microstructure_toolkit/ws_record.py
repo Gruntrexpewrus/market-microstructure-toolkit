@@ -6,16 +6,17 @@
 # This was coded with love <3
 
 from __future__ import annotations
+
 import asyncio
 import csv
-import time
 import logging
+import time
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
+from .exchange import make_exchange
 from .setup_log import setup_logging
 from .snapshot import fetch_order_book_snapshot
-from .exchange import make_exchange
 
 log = logging.getLogger(__name__)  # handlers set in main()
 
@@ -75,9 +76,7 @@ def _header_for_depth(depth: int) -> list[str]:
     return h
 
 
-async def _stream_ccxtpro(
-    exchange_id: str, symbol: str, depth: int, out: Path, seconds: int
-):
+async def _stream_ccxtpro(exchange_id: str, symbol: str, depth: int, out: Path, seconds: int):
     import ccxtpro  # requires user to install ccxt.pro
 
     ex = getattr(ccxtpro, exchange_id)({"enableRateLimit": True})
@@ -94,18 +93,12 @@ async def _stream_ccxtpro(
                 "ts_ms": ob.get("timestamp") or int(time.time() * 1000),
                 "iso": time.strftime(
                     "%Y-%m-%dT%H:%M:%S+00:00",
-                    time.gmtime(
-                        (ob.get("timestamp") or int(time.time() * 1000)) / 1000
-                    ),
+                    time.gmtime((ob.get("timestamp") or int(time.time() * 1000)) / 1000),
                 ),
                 "best_bid": (ob.get("bids") or [[None, None]])[0][0],
                 "best_ask": (ob.get("asks") or [[None, None]])[0][0],
-                "bids": [
-                    (float(px), float(sz)) for px, sz in (ob.get("bids") or [])[:depth]
-                ],
-                "asks": [
-                    (float(px), float(sz)) for px, sz in (ob.get("asks") or [])[:depth]
-                ],
+                "bids": [(float(px), float(sz)) for px, sz in (ob.get("bids") or [])[:depth]],
+                "asks": [(float(px), float(sz)) for px, sz in (ob.get("asks") or [])[:depth]],
                 "symbol": symbol,
                 "exchange_id": ex.id,
                 "raw_nonce": ob.get("nonce"),
@@ -152,17 +145,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Websocket (or REST-fallback) order-book recorder → CSV"
     )
-    parser.add_argument(
-        "--exchange", required=True, help="ccxt id (e.g., bybit, okx, binance)"
-    )
-    parser.add_argument(
-        "--symbol", required=True, help="Unified symbol (e.g., ETH/USDT:USDT)"
-    )
+    parser.add_argument("--exchange", required=True, help="ccxt id (e.g., bybit, okx, binance)")
+    parser.add_argument("--symbol", required=True, help="Unified symbol (e.g., ETH/USDT:USDT)")
     parser.add_argument("--depth", type=int, default=50)
     parser.add_argument("--seconds", type=int, default=60)
-    parser.add_argument(
-        "--hz", type=float, default=5.0, help="Only used for REST fallback"
-    )
+    parser.add_argument("--hz", type=float, default=5.0, help="Only used for REST fallback")
     parser.add_argument(
         "--out",
         default="",
@@ -174,8 +161,7 @@ def main():
 
     sym_sanitized = args.symbol.replace("/", "").replace(":", "")
     out = Path(
-        args.out
-        or f"data/ws_{args.exchange}_{sym_sanitized}_d{args.depth}_{args.seconds}s.csv"
+        args.out or f"data/ws_{args.exchange}_{sym_sanitized}_d{args.depth}_{args.seconds}s.csv"
     )
 
     log.info(
@@ -196,9 +182,7 @@ def main():
         log.warning("ccxt.pro not available → using REST fallback at %.2f Hz", args.hz)
 
     if has_pro:
-        asyncio.run(
-            _stream_ccxtpro(args.exchange, args.symbol, args.depth, out, args.seconds)
-        )
+        asyncio.run(_stream_ccxtpro(args.exchange, args.symbol, args.depth, out, args.seconds))
     else:
         asyncio.run(
             _stream_rest_fallback(

@@ -37,9 +37,9 @@ Output in logs folder:
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple, TypeVar
-import time
 import logging
+import time
+from typing import Callable, Optional, Tuple, TypeVar
 
 import ccxt
 
@@ -48,9 +48,7 @@ log = logging.getLogger(__name__)  # no handlers here
 T = TypeVar("T")
 
 
-def make_exchange(
-    name: str, default_type: Optional[str] = None, **kwargs
-) -> ccxt.Exchange:
+def make_exchange(name: str, default_type: Optional[str] = None, **kwargs) -> ccxt.Exchange:
     """
     Create a CCXT exchange with rate limiting and optional defaultType.
 

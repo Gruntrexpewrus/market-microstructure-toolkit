@@ -1,4 +1,5 @@
 import pytest
+
 import market_microstructure_toolkit.snapshot as snapshot
 
 
@@ -25,9 +26,7 @@ def test_norm_valid_and_invalid():
 def test_fetch_order_book_snapshot_L1(monkeypatch):
     ex = DummyExchange()
     # Patch L1 call
-    snapshot_result = snapshot.fetch_order_book_snapshot(
-        ex, "BTC/USDT", depth=1, book_level="L1"
-    )
+    snapshot_result = snapshot.fetch_order_book_snapshot(ex, "BTC/USDT", depth=1, book_level="L1")
     assert snapshot_result["best_bid"] == 100.0
     assert snapshot_result["best_ask"] == 101.0
     assert snapshot_result["symbol"] == "BTC/USDT"

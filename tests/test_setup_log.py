@@ -1,6 +1,5 @@
 import pytest
 
-
 from market_microstructure_toolkit.setup_log import setup_logging
 
 

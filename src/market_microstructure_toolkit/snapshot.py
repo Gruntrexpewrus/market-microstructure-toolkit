@@ -11,19 +11,17 @@
 
 from __future__ import annotations
 
+import logging
 import time
 from datetime import datetime, timezone
-from typing import List, Tuple, Dict, Any, Optional
-import logging
+from typing import Any, Dict, List, Optional, Tuple
 
 from .setup_log import setup_logging
 
 log = logging.getLogger(__name__)  # no handlers here
 
 
-def _norm(
-    levels_list: Optional[List[List[float]]], n: int
-) -> List[Tuple[float, float]]:
+def _norm(levels_list: Optional[List[List[float]]], n: int) -> List[Tuple[float, float]]:
     """Normalize raw [price, size] into [(float(px), float(sz))], truncated to n."""
     out: List[Tuple[float, float]] = []
     if not levels_list:
