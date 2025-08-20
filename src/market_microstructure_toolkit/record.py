@@ -11,11 +11,11 @@
 from __future__ import annotations
 
 import csv
+import logging
 import os
 import time
-from typing import List, Dict, Any
 from pathlib import Path
-import logging
+from typing import Any, Dict, List
 
 # --- robust import for snapshot (works in both module and script modes) ---
 from .snapshot import fetch_order_book_snapshot
@@ -101,9 +101,7 @@ def _write_parquet(rows: List[Dict[str, Any]], out_path: str, depth: int) -> Non
     try:
         import pandas as pd
     except Exception as e:
-        log.warning(
-            "Parquet requested, but pandas not available (%s). Falling back to CSV.", e
-        )
+        log.warning("Parquet requested, but pandas not available (%s). Falling back to CSV.", e)
         return _write_csv(rows, out_path.replace(".parquet", ".csv"), depth)
 
     df = pd.DataFrame(rows, columns=_header_for_depth(depth))
@@ -182,9 +180,7 @@ def record_snapshots(
             time.sleep(next_t - now)
 
         try:
-            snap = fetch_order_book_snapshot(
-                ex, symbol, depth=depth, book_level=book_level
-            )
+            snap = fetch_order_book_snapshot(ex, symbol, depth=depth, book_level=book_level)
             rows.append(_flatten_snapshot_to_row(snap, depth))
             written += 1
         except Exception as e:
@@ -233,12 +229,10 @@ if __name__ == "__main__":
     import argparse
     import json
 
-    from .setup_log import setup_logging
     from .exchange import make_exchange
+    from .setup_log import setup_logging
 
-    parser = argparse.ArgumentParser(
-        description="Record order-book snapshots to CSV/Parquet."
-    )
+    parser = argparse.ArgumentParser(description="Record order-book snapshots to CSV/Parquet.")
     parser.add_argument(
         "--exchange", required=True, help="CCXT exchange id, e.g., bybit, binance, okx"
     )
@@ -253,32 +247,22 @@ if __name__ == "__main__":
         required=True,
         help="Unified symbol, e.g., BTC/USDT or BTC/USDT:USDT for swaps",
     )
-    parser.add_argument(
-        "--seconds", type=int, default=60, help="Duration to record (seconds)"
-    )
-    parser.add_argument(
-        "--hz", type=float, default=1.0, help="Snapshots per second (Hz)"
-    )
-    parser.add_argument(
-        "--depth", type=int, default=50, help="Top-N levels to save per side"
-    )
+    parser.add_argument("--seconds", type=int, default=60, help="Duration to record (seconds)")
+    parser.add_argument("--hz", type=float, default=1.0, help="Snapshots per second (Hz)")
+    parser.add_argument("--depth", type=int, default=50, help="Top-N levels to save per side")
     parser.add_argument(
         "--book-level",
         choices=["L1", "L2", "L3"],
         default="L2",
         help="Order book detail level",
     )
-    parser.add_argument(
-        "--format", choices=["csv", "parquet"], default="csv", help="Output format"
-    )
+    parser.add_argument("--format", choices=["csv", "parquet"], default="csv", help="Output format")
     parser.add_argument(
         "--out",
         default="",
         help="Output path (.csv or .parquet). If empty, an auto name is used.",
     )
-    parser.add_argument(
-        "--timeout", type=int, default=10000, help="Exchange HTTP timeout (ms)"
-    )
+    parser.add_argument("--timeout", type=int, default=10000, help="Exchange HTTP timeout (ms)")
     parser.add_argument(
         "--params",
         default="",
@@ -291,9 +275,7 @@ if __name__ == "__main__":
     log = setup_logging(name="record")
 
     # Build exchange
-    ex = make_exchange(
-        args.exchange, default_type=args.market_type, timeout=args.timeout
-    )
+    ex = make_exchange(args.exchange, default_type=args.market_type, timeout=args.timeout)
 
     # Resolve output path
     if args.out:
@@ -307,9 +289,7 @@ if __name__ == "__main__":
     try:
         extra_params = json.loads(args.params) if args.params else {}
     except Exception as e:
-        log.warning(
-            "Could not parse --params JSON (%s). Proceeding without extra params.", e
-        )
+        log.warning("Could not parse --params JSON (%s). Proceeding without extra params.", e)
         extra_params = {}
 
     # Run

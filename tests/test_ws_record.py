@@ -6,16 +6,17 @@
 # This was coded with love <3
 
 from __future__ import annotations
+
 import csv
 import time
+
 import pytest
 
 # pytestmark = pytest.mark.asyncio
-
 # import the internal coroutines directly
 from market_microstructure_toolkit.ws_record import (
-    _stream_rest_fallback,
     _header_for_depth,
+    _stream_rest_fallback,
 )
 
 

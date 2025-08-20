@@ -9,17 +9,18 @@
 from __future__ import annotations
 
 import math
+
 import pytest
 
 from market_microstructure_toolkit.metrics import (
+    book_slope,
     compute_row_metrics,
-    relative_spread_bps,
     microprice,
     microprice_imbalance,
-    rolling_realized_variance,
     notional_depth,
-    book_slope,
     ofi_l1,
+    relative_spread_bps,
+    rolling_realized_variance,
 )
 
 # ---------- helpers ----------
