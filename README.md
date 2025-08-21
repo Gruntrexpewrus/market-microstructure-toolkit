@@ -1,12 +1,6 @@
 # Market Microstructure Toolkit
 
-Lightweight research toolkit to **record crypto order book snapshots** and compute core **microstructure features** such as:
-
-- Spread & midprice  
-- Depth imbalance (L1, depth-K)  
-- OFI (order flow imbalance, WIP)  
-- Realized variance (WIP)  
-- Microprice (WIP)  
+Lightweight toolkit to **record crypto order books** and compute core **microstructure features** for research and prototyping.
 
 Built for hands-on learning, reproducible experiments, and quick analysis.
 
@@ -16,15 +10,18 @@ Built for hands-on learning, reproducible experiments, and quick analysis.
 
 ---
 
-## Features
+## ✨ Features
 
-- **Exchange bootstrap** (via [ccxt](https://github.com/ccxt/ccxt))  
-- **Symbol validation** (spot / swap / future)  
-- **Normalized snapshots** (L1 / L2) → flat schema  
-- **Recorder**: save to CSV or Parquet at fixed Hz  
-- **Metrics pipeline**: enrich recordings with spread, mid, imbalance, …  
-- **Logging**: every run logs to `logs/` for reproducibility  
-- **Tests**: Pytest-based unit tests for core modules  
+- **Exchange bootstrap** (ccxt) & symbol checks (spot/swap/future)
+- **Normalized snapshots** (L1/L2) → flat, analytics-friendly schema
+- **Recorders**
+  - REST recorder (fixed Hz)
+  - Websocket recorder (ccxt.pro, when available)
+  - Robust **writer queue** (no drops) with precise pacing
+- **Metrics**: mid, spread, relative spread (bps), microprice, imbalances (L1 & depth-K), realized variance, notional depth, slope/convexity, OFI
+- **Plotting CLI**: quick PNGs for common metrics
+- **Logging**: runs log to `logs/`
+- **Tests**: `pytest` unit tests
 
 ---
 
@@ -32,17 +29,21 @@ Built for hands-on learning, reproducible experiments, and quick analysis.
 
 ```bash
 # clone & enter repo
-git clone https://github.com/<yourname>/market-microstructure-toolkit.git
+git clone https://github.com/Gruntrexpewrus/market-microstructure-toolkit.git
 cd market-microstructure-toolkit
 
-# create env (example with conda)
-conda create -n mmtoolkit python=3.9 -y
-conda activate mmtoolkit
+# Conda example
+conda create -n mmt python=3.10 -y
+conda activate mmt
 
-# install package (editable mode)
-pip install -e .
-# optional: Parquet support
-pip install pyarrow  # or fastparquet
+# Toolkit + dev tools
+pip install -e .[dev]
+
+# Optional: Parquet backend
+pip install pyarrow    # or fastparquet
+
+# Optional: Websocket capture (commercial)
+# pip install ccxtpro
 ```
 
 # Usage(CLI)
@@ -60,6 +61,8 @@ python -m market_microstructure_toolkit.record \
   --format parquet \
   --out data/ETHUSDT_swap_30s.parquet
   ```
+  You can also use the console entrypoints installed by the package:
+mmt-ws-record, mmt-record, mmt-metrics, mmt-plot.
 
 2) Compute metrics
 ```bash
@@ -118,27 +121,53 @@ Order flow imbalance measured across top-10 levels (size-based and notional).
 Rolling realized variance of midprice (RV-20).  
 ![Realized Variance](plots/ETH_bybit_L2_60s/rv.png)
 
+
+### CSV Schema
+```bash
+ts_ms, iso, exchange_id, symbol, book_level, raw_nonce, best_bid, best_ask,
+bid1_price, bid1_size, ... bidK_price, bidK_size,
+ask1_price, ask1_size, ... askK_price, askK_size
+	•	Numeric fields use 10 decimals; missing levels are blank.
+	•	ts_ms is producer timestamp (ms); iso is UTC.
+```
+# format + lint
+pre-commit run --all-files
+
+# run tests
+pytest -q
+
+### Dev Workflow 
+
+```bash
+# quick smoke: record 5s @ 2Hz depth=5 (REST or WS)
+python -m market_microstructure_toolkit.ws_record \
+  --exchange bybit --symbol ETH/USDT:USDT --depth 5 --seconds 5 --hz 2
+python -m market_microstructure_toolkit.metrics_cli data/ws_bybit_*_d5_5s_2hz.csv 5
+python -m market_microstructure_toolkit.plot_cli data/ws_bybit_*_d5_5s_2hz.csv --depth 5 --save
+```
+
 ## Roadmap
 
-**Phase 1 (done):**  
-✅ Exchange bootstrap & symbol checks  
-✅ Normalized snapshots (L1/L2)  
-✅ Recorder (CSV/Parquet)  
-✅ Metrics: spread, mid, imbalance (L1, depth-K)  
+Phase 1 (done):
+✅ Exchange bootstrap & symbol checks
+✅ Normalized snapshots (L1/L2)
+✅ Recorder (CSV/Parquet)
+✅ Metrics: spread, mid, imbalance (L1, depth-K)
 
-**Phase 2 (next):**  
-✅ Relative spread (bps)  
-✅ Microprice & microprice imbalance  
-✅ Rolling realized variance & volatility proxies  
-✅ Notional depth, book slope/convexity  
-✅ Order flow imbalance (OFI)  
+Phase 2 (done/ongoing):
+✅ Relative spread (bps)
+✅ Microprice & microprice imbalance
+✅ Rolling realized variance & volatility proxies
+✅ Notional depth, slope/convexity
+✅ OFI variants (L1, depth-K)
+✅ Plotting CLI
 
-**Phase 3 (later):**  
-⬜ Websocket streaming collectors  
-⬜ Event-time metrics (per book update)  
-⬜ Advanced visualization & analytics  
-⬜ Market impact helpers (VWAP/TWAP)  
-⬜ `console_scripts` entry points (`mmt-record`, `mmt-metrics`)  
+Phase 3 (next):
+⬜ Event-time metrics (per book update)
+⬜ Advanced visualization & analytics
+⬜ Market impact helpers (VWAP/TWAP)
+⬜ Packaging polish (wheels, PyPI)
+⬜ More console_scripts entry points
 
 ---
 

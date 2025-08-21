@@ -1,22 +1,55 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=69", "setuptools-scm>=8", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "market_microstructure_toolkit"
-version = "0.0.1"
+dynamic = ["version"]
 description = "Research toolkit for order book microstructure"
 authors = [{name="Leonardo Placidi"}]
 requires-python = ">=3.9"
+dependencies = [
+  "ccxt>=4.3.0",
+  "pandas>=2.1",
+  "numpy>=1.24",
+  "matplotlib>=3.7",
+]
+
+
+[project.optional-dependencies]
+# Parquet support
+parquet = ["pyarrow>=14.0"]  # or use "fastparquet>=2024.5.0"
+# Websocket streaming via ccxt.pro
+#ws = ["ccxtpro>=2.0.0"]
+# Developer tooling
+dev = [
+  "pytest>=8.2",
+  "pytest-asyncio>=0.23",
+  "black>=24.4",
+  "ruff>=0.5",
+  "pre-commit>=3.7",
+]
+viz = [
+  "jupyter>=1.0",              # notebooks/quick demo
+]
+
+[tool.setuptools_scm]
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
+write_to = "src/market_microstructure_toolkit/_version.py"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "strict"
+
+[tool.git-cliff]
+changelog = "CHANGELOG.md"
 
 [tool.black]
 line-length = 100
@@ -34,3 +67,7 @@ mmt-record = "market_microstructure_toolkit.record:main"
 mmt-metrics = "market_microstructure_toolkit.metrics_cli:main"
 mmt-plot = "market_microstructure_toolkit.plot_cli:main"
 mmt-ws-record = "market_microstructure_toolkit.ws_record:main"
+
+[project.urls]
+Homepage = "https://github.com/Gruntrexpewrus/market-microstructure-toolkit"
+Issues = "https://github.com/Gruntrexpewrus/market-microstructure-toolkit/issues"
