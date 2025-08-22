@@ -16,11 +16,8 @@ jobs:
         python-version: ["3.10", "3.11", "3.12"]
 
     env:
-      # Make the test suite write logs where tests expect them
-      MMT_LOG_DIR: tests/_artifacts/logs
-      # Headless plotting for matplotlib
-      MPLBACKEND: Agg
-      # Avoid locale/encoding flakiness
+      MMT_LOG_DIR: tests/_artifacts/logs   # your tests expect this path
+      MPLBACKEND: Agg                      # headless matplotlib
       PYTHONUTF8: "1"
 
     steps:
@@ -30,14 +27,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
+          cache: pip
 
-      - name: Show Python & pip
-        run: |
-          python -V
-          pip -V
-
-      - name: Prepare test artifact directories
+      - name: Prepare artifacts dirs
         run: |
           mkdir -p tests/_artifacts/logs
           mkdir -p tests/_artifacts
@@ -45,18 +37,14 @@ jobs:
       - name: Install package + dev tools
         run: |
           python -m pip install --upgrade pip
-          # Install your package with dev extras if available; otherwise fall back to explicit tools
           pip install -e .[dev] || pip install -e . pre-commit pytest ruff black
-          # Optional runtime deps used by tests/CLIs
-          pip install pyarrow ccxt
-          # DO NOT install ccxtpro on CI
+          pip install pyarrow ccxt  # optional deps used by your suite/CLIs
 
       - name: Lint (pre-commit)
         uses: pre-commit/action@v3.0.1
 
       - name: Run tests
-        run: |
-          pytest -q --maxfail=1 -ra
+        run: pytest -q --maxfail=1 -ra
 
       - name: Upload logs (always)
         if: always()
@@ -67,7 +55,6 @@ jobs:
           if-no-files-found: ignore
 
   build:
-    name: build
     if: github.ref_type == 'tag' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [test]
@@ -76,24 +63,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"
-      - name: Build wheels/sdist
+          cache: pip
+      - name: Build dist
         run: |
-          python -m pip install --upgrade pip build
+          python -m pip install --upgrade build
           python -m build
-      - name: Upload dist artifacts
+      - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/*
 
   publish:
-    name: publish
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
     needs: [build]
+    runs-on: ubuntu-latest
     permissions:
-      id-token: write     # for PyPI Trusted Publishing
+      id-token: write
       contents: read
     steps:
       - uses: actions/download-artifact@v4
@@ -104,5 +90,3 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip-existing: true
-          # If not using Trusted Publishing, add:
-          # password: ${{ secrets.PYPI_API_TOKEN }}
