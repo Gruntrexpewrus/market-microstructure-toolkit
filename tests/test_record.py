@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import csv
+import logging
 from pathlib import Path
 
 import pytest
@@ -140,10 +141,10 @@ def test_flatten_snapshot_to_row_padding_and_meta():
     assert row["ask4_price"] == "" and row["ask4_size"] == ""
 
 
-def test_record_snapshots_csv_monkeypatched(monkeypatch):
+def test_record_snapshots_csv_monkeypatched(monkeypatch, caplog):
     """
-    Record 1 second at 2 Hz (≈2 rows) to CSV and assert on the produced file
-    and the module log file written under tests/_artifacts/logs/record.log.
+    Record 1 second at 2 Hz (≈2 rows) to CSV and assert on the produced file.
+    Also assert the emitted log lines using caplog (no dependence on file flush).
     """
     # Arrange: deterministic fake snapshot (no network)
     monkeypatch.setattr(
@@ -153,6 +154,9 @@ def test_record_snapshots_csv_monkeypatched(monkeypatch):
     )
     ex = FakeExchange()
     out = ARTIFACTS / "book.csv"
+
+    # capture logs from the logger that record.py uses
+    caplog.set_level(logging.INFO, logger="record")
 
     # Act
     record.record_snapshots(
@@ -174,12 +178,14 @@ def test_record_snapshots_csv_monkeypatched(monkeypatch):
     assert len(header) == 8 + 4 * 5
     assert all(len(r) == len(header) for r in rows[1:])
 
-    # Assert on the actual log file (since logger uses custom handlers & propagate=False)
-    log_path = ARTIFACTS_LOGS / "record.log"
-    assert log_path.exists()
-    text = log_path.read_text()
+    # Assert on log contents (robust, no file I/O assumptions)
+    text = caplog.text
     assert "Recording 1s at 2.0 Hz" in text
     assert "Done. Rows captured: 2" in text
+
+    # (Optional) still verify the file exists; but don't parse its content
+    log_path = ARTIFACTS_LOGS / "record.log"
+    assert log_path.exists()
 
 
 @pytest.mark.parametrize("engine", ["parquet", "csv"])

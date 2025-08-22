@@ -1,70 +1,46 @@
 from __future__ import annotations
 
+# src/market_microstructure_toolkit/setup_log.py
+import inspect
 import logging
 from pathlib import Path
 
 
-def setup_logging(log_dir: str = "logs", name: str | None = None):
+def setup_logging(log_dir: str = "logs", name: str | None = None) -> logging.Logger:
     """
-    Set up logging with:
-    - Automatic logger name based on the calling script's filename (unless 'name' is provided)
-    - Log file saved in `log_dir` (default: 'logs/')
-    - Logs written both to console and file
-    - Default log level: INFO
+    Configure root logging (file + console) and return a named child logger.
 
-    Parameters
-    ----------
-    log_dir : str
-        Directory where the log file will be stored. Defaults to 'logs'.
-    name : str | None
-        Optional logger name. If None, it will automatically use the calling script's filename.
-
-    Returns
-    -------
-    logging.Logger
-        Configured logger object ready to use.
+    - Root logger gets handlers so any logger (logging.getLogger(__name__)) propagates here.
+    - Returns a child logger named `name` (or the caller's module filename).
+    - Log file at logs/<name>.log
     """
-
-    # If the user did not pass a 'name', try to detect the name of the calling script
     if name is None:
-        # __file__ is the file where THIS function is defined (usually the logging module)
-        name = Path(__file__).stem
+        frame = inspect.stack()[1]
+        name = Path(frame.filename).stem
 
-        # If this function is IMPORTED into another file, __file__ will not be the caller
-        # So we inspect the call stack and grab the filename of the caller instead
-        import inspect
-
-        frame = inspect.stack()[1]  # 0 = current frame, 1 = caller frame
-        name = Path(frame.filename).stem  # Extract filename without extension
-
-    # Ensure the logging directory exists
     Path(log_dir).mkdir(parents=True, exist_ok=True)
-
-    # Path for the log file, e.g., logs/scriptname.log
     logfile = Path(log_dir) / f"{name}.log"
 
-    # Create (or get) the logger
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)  # Default logging level
-    logger.propagate = False  # Prevent double logging if root logger also has handlers
-
-    # Remove old handlers if this function is called multiple times in the same run
-    for h in list(logger.handlers):
-        logger.removeHandler(h)
-
-    # Define log format: timestamp, log level, logger name, and message
+    # Formatter
     fmt = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
 
-    # File handler: writes logs to a file (overwrite mode)
+    # Root logger gets (fresh) handlers
+    root = logging.getLogger()
+    root.setLevel(logging.INFO)
+
+    # Clear existing handlers (so re-running a CLI doesn’t duplicate outputs)
+    for h in list(root.handlers):
+        root.removeHandler(h)
+
     fh = logging.FileHandler(logfile, mode="w", encoding="utf-8")
     fh.setFormatter(fmt)
-
-    # Console handler: prints logs to stdout
     ch = logging.StreamHandler()
     ch.setFormatter(fmt)
 
-    # Attach both handlers to the logger
-    logger.addHandler(fh)
-    logger.addHandler(ch)
+    root.addHandler(fh)
+    root.addHandler(ch)
 
+    # Return a child logger; let it propagate to root
+    logger = logging.getLogger(name)
+    logger.propagate = True  # ensure it bubbles up to root handlers
     return logger

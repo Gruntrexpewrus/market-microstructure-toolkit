@@ -1,3 +1,13 @@
+exclude: >
+  (?x)(
+      ^src/market_microstructure_toolkit/_version\.py$ |
+      ^tests/_artifacts/ |
+      ^logs/ |
+      ^plots/ |
+      ^impact/ |
+      ^data/
+  )
+
 repos:
   - repo: https://github.com/psf/black
     rev: 24.8.0

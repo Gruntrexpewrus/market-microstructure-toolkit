@@ -9,3 +9,4 @@ venv/
 # OS files
 .DS_Store
 
+src/market_microstructure_toolkit.egg-info/

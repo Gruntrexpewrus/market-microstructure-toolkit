@@ -1,0 +1,2 @@
+side,target_qty,filled_qty,vwap,notional,fees_paid,slippage_bps_vs_mid_open,slippage_bps_vs_mid_close,slices,depth_k,proxy
+buy,50.0,49.999999999999964,4306.75333105333,215337.66655266634,107.61502576345148,5.478890885547198,0.5534197682571698,24,25,topk_sum

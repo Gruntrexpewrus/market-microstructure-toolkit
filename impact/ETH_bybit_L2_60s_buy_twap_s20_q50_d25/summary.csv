@@ -1,0 +1,2 @@
+side,target_qty,filled_qty,vwap,notional,slippage_bps_vs_mid_open,slippage_bps_vs_mid_close,slices,input
+buy,50.0,49.99999999999999,4301.466768000002,215073.33840000007,-6.802888675407903,1.073628140404459,20,/Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s.parquet

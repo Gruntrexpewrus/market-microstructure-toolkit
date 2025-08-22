@@ -1,1 +1,3 @@
-2025-08-17 20:04:27,942 INFO metrics_cli: Wrote metrics → data/ETHUSDT_swap_30s_metrics.csv
+2025-08-22 19:24:15,471 INFO metrics_cli: Reading /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ws_bybit_ETHUSDTUSDT_d5_5s_5hz.csv
+2025-08-22 19:24:15,472 INFO metrics_cli: Loaded 26 rows
+2025-08-22 19:24:15,473 INFO metrics_cli: Wrote metrics → /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ws_bybit_ETHUSDTUSDT_d5_5s_5hz_metrics.csv

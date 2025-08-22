@@ -22,7 +22,6 @@ from .snapshot import fetch_order_book_snapshot
 
 # ------------- helpers: paths & schema -------------
 log = logging.getLogger(__name__)  # no handlers here
-# log = setup_logging(name=__name__)  # test rebinds this exact logger
 
 
 def _ensure_parent(path: str) -> None:
@@ -304,10 +303,5 @@ if __name__ == "__main__":
         book_level=args.book_level,
         out_format=args.format,
     )
-    for h in logging.getLogger("record").handlers:
-        try:
-            h.flush()
-        except Exception:
-            pass
-        logging.shutdown()
+
     log.info("Saved: %s", out_path)
