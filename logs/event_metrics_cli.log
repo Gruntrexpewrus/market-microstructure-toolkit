@@ -1,3 +1,9 @@
-2025-08-22 20:43:41,402 INFO market_microstructure_toolkit.event_metrics_cli: Event-time metrics start: input=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/book.csv rv_window=3 out=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/out.csv
-2025-08-22 20:43:41,410 INFO market_microstructure_toolkit.event_metrics_cli: Loaded input: rows=4, cols=12
-2025-08-22 20:43:41,413 INFO market_microstructure_toolkit.event_metrics_cli: Wrote event-time metrics → /private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/out.csv (rows=4, cols=18)
+2025-08-22 21:14:24,887 INFO market_microstructure_toolkit.event_metrics_cli: Event-time metrics start: input=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-29/test_event_metrics_cli_csv0/book.csv rv_window=3 out=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-29/test_event_metrics_cli_csv0/out.csv
+2025-08-22 21:14:24,888 INFO market_microstructure_toolkit.event_metrics_cli: Loaded input: rows=4, cols=12
+2025-08-22 21:14:24,892 INFO market_microstructure_toolkit.event_metrics_cli: Wrote event-time metrics → /private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-29/test_event_metrics_cli_csv0/out.csv (rows=4, cols=18)
+2025-08-22 21:14:24,899 INFO record: Recording 1s at 2.0 Hz (depth=5, level=L2, format=csv) → tests/_artifacts/book.csv
+2025-08-22 21:14:25,409 INFO record: Done. Rows captured: 2 → tests/_artifacts/book.csv
+2025-08-22 21:14:25,412 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=parquet) → tests/_artifacts/book_param.parquet
+2025-08-22 21:14:25,459 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.parquet
+2025-08-22 21:14:25,460 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=csv) → tests/_artifacts/book_param.csv
+2025-08-22 21:14:25,460 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.csv

@@ -1,2 +1,6 @@
-2025-08-22 20:44:27,951 INFO impact_vwap: VWAP summary  → /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s_impact_vwap_summary.csv
-2025-08-22 20:44:27,952 INFO impact_vwap: VWAP per-slice→ /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s_impact_vwap_slices.csv
+2025-08-22 21:00:03,365 INFO record: Recording 1s at 2.0 Hz (depth=5, level=L2, format=csv) → tests/_artifacts/book.csv
+2025-08-22 21:00:03,871 INFO record: Done. Rows captured: 2 → tests/_artifacts/book.csv
+2025-08-22 21:00:03,876 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=parquet) → tests/_artifacts/book_param.parquet
+2025-08-22 21:00:03,915 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.parquet
+2025-08-22 21:00:03,916 INFO record: Recording 1s at 1.0 Hz (depth=3, level=L2, format=csv) → tests/_artifacts/book_param.csv
+2025-08-22 21:00:03,916 INFO record: Done. Rows captured: 1 → tests/_artifacts/book_param.csv
