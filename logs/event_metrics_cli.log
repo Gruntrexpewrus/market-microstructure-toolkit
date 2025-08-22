@@ -1,0 +1,3 @@
+2025-08-22 20:43:41,402 INFO market_microstructure_toolkit.event_metrics_cli: Event-time metrics start: input=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/book.csv rv_window=3 out=/private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/out.csv
+2025-08-22 20:43:41,410 INFO market_microstructure_toolkit.event_metrics_cli: Loaded input: rows=4, cols=12
+2025-08-22 20:43:41,413 INFO market_microstructure_toolkit.event_metrics_cli: Wrote event-time metrics → /private/var/folders/97/gnjvmb3x0_s4v_gfyqxc1zdm0000gn/T/pytest-of-leonardoplacidi/pytest-24/test_event_metrics_cli_csv0/out.csv (rows=4, cols=18)

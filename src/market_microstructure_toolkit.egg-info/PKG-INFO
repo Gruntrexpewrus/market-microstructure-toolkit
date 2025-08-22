@@ -1,6 +1,6 @@
 Metadata-Version: 2.2
 Name: market_microstructure_toolkit
-Version: 0.1.2.dev0+g38282989e.d20250821
+Version: 0.1.2.dev1+gb5dff9f55.d20250822
 Summary: Research toolkit for order book microstructure
 Author: Leonardo Placidi
 Project-URL: Homepage, https://github.com/Gruntrexpewrus/market-microstructure-toolkit

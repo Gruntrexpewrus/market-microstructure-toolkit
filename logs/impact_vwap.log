@@ -1,0 +1,2 @@
+2025-08-22 20:44:27,951 INFO impact_vwap: VWAP summary  → /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s_impact_vwap_summary.csv
+2025-08-22 20:44:27,952 INFO impact_vwap: VWAP per-slice→ /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s_impact_vwap_slices.csv

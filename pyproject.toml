@@ -67,6 +67,11 @@ mmt-record = "market_microstructure_toolkit.record:main"
 mmt-metrics = "market_microstructure_toolkit.metrics_cli:main"
 mmt-plot = "market_microstructure_toolkit.plot_cli:main"
 mmt-ws-record = "market_microstructure_toolkit.ws_record:main"
+mmt-event-metrics = "market_microstructure_toolkit.event_metrics_cli:main"
+mmt-plot-adv = "market_microstructure_toolkit.plot_adv_cli:main"
+mmt-impact = "market_microstructure_toolkit.impact_cli:main"
+mmt-impact-twap = "market_microstructure_toolkit.impact_twap_cli:main"
+mmt-impact-vwap = "market_microstructure_toolkit.impact_vwap_cli:main"
 
 [project.urls]
 Homepage = "https://github.com/Gruntrexpewrus/market-microstructure-toolkit"

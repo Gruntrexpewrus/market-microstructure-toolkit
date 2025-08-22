@@ -1,0 +1,17 @@
+2025-08-22 19:21:23,744 INFO plot_adv: Starting advanced plots | input=/Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s.parquet save=True outdir=plots/ETH_bybit_L2_60s_adv depth=25 rv_window=200 corr_window=100 tail=2000
+2025-08-22 19:21:23,744 INFO market_microstructure_toolkit.advanced_plots: Loading: /Users/leonardoplacidi/Desktop/quant/PortfolioQuantFinance/market-microstructure-toolkit/data/ETH_bybit_L2_60s.parquet
+2025-08-22 19:21:23,845 INFO market_microstructure_toolkit.advanced_plots: Using tail=2000 (rows now 60)
+2025-08-22 19:21:23,848 INFO market_microstructure_toolkit.advanced_plots: Ensured metrics: mid, spread_bps, microprice, ofi_l1, ret_mid
+2025-08-22 19:21:23,848 INFO market_microstructure_toolkit.advanced_plots: Plotting → save=True, outdir=plots/ETH_bybit_L2_60s
+2025-08-22 19:21:24,085 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/spread_bps_hist.png
+2025-08-22 19:21:24,167 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/microprice_premium.png
+2025-08-22 19:21:24,240 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/ofi_l1.png
+2025-08-22 19:21:24,322 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/ret_mid.png
+2025-08-22 19:21:24,395 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/ofi_vs_returns_rolling_corr.png
+2025-08-22 19:21:24,468 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/rv_event.png
+2025-08-22 19:21:24,550 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/avg_bid_depth_curve.png
+2025-08-22 19:21:24,629 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/avg_ask_depth_curve.png
+2025-08-22 19:21:24,712 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/bid_depth_slope.png
+2025-08-22 19:21:24,797 INFO market_microstructure_toolkit.advanced_plots: Saved: plots/ETH_bybit_L2_60s/ask_depth_slope.png
+2025-08-22 19:21:24,797 INFO market_microstructure_toolkit.advanced_plots: Saved all plots to plots/ETH_bybit_L2_60s
+2025-08-22 19:21:24,797 INFO plot_adv: Saved plots → plots/ETH_bybit_L2_60s_adv

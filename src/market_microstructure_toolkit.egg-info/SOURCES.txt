@@ -5,6 +5,7 @@ autolint.py
 environment.yml
 pyproject.toml
 requirements.txt
+.github/workflows/ci.yml
 data/BTCUSDT_swap_demo_10s.csv
 data/BTCUSDT_swap_demo_10s.parquet
 data/BTCUSDT_swap_demo_10s_metrics.csv
@@ -52,9 +53,19 @@ plots/ETH_bybit_L2_60s/rv.png
 plots/ETH_bybit_L2_60s/spread_bps.png
 src/market_microstructure_toolkit/__init__.py
 src/market_microstructure_toolkit/_version.py
+src/market_microstructure_toolkit/advanced_plots.py
+src/market_microstructure_toolkit/event_metrics.py
+src/market_microstructure_toolkit/event_metrics_cli.py
 src/market_microstructure_toolkit/exchange.py
+src/market_microstructure_toolkit/impact.py
+src/market_microstructure_toolkit/impact_cli.py
+src/market_microstructure_toolkit/impact_twap.py
+src/market_microstructure_toolkit/impact_twap_cli.py
+src/market_microstructure_toolkit/impact_vwap.py
+src/market_microstructure_toolkit/impact_vwap_cli.py
 src/market_microstructure_toolkit/metrics.py
 src/market_microstructure_toolkit/metrics_cli.py
+src/market_microstructure_toolkit/plot_adv_cli.py
 src/market_microstructure_toolkit/plot_cli.py
 src/market_microstructure_toolkit/record.py
 src/market_microstructure_toolkit/setup_log.py
@@ -67,6 +78,8 @@ src/market_microstructure_toolkit.egg-info/entry_points.txt
 src/market_microstructure_toolkit.egg-info/requires.txt
 src/market_microstructure_toolkit.egg-info/top_level.txt
 tests/instructions.txt
+tests/test_event_metrics.py
+tests/test_event_metrics_cli.py
 tests/test_exchange.py
 tests/test_metrics.py
 tests/test_record.py

@@ -1,0 +1,2 @@
+2025-08-22 19:36:12,979 INFO impact_cli: Wrote slice rollup  → impact/ETH_bybit_L2_60s_buy_twap_s20_q50_d25/slices.csv
+2025-08-22 19:36:12,980 INFO impact_cli: Wrote summary      → impact/ETH_bybit_L2_60s_buy_twap_s20_q50_d25/summary.csv
